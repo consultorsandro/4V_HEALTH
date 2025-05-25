@@ -3,7 +3,7 @@ mod metabolism;
 
 use std::io;
 use bmi::calculator::{BmiCalculator, BmiData};
-use metabolism::tmb::{TmbCalculator, TmbData, Gender};
+use metabolism::tmb::{TmbCalculator, TmbData, Gender, TmbCategory};
 
 fn main() {
     loop {
@@ -54,11 +54,12 @@ fn main() {
                     weight,
                     height,
                     age,
-                    gender,
+                    gender: gender.clone(),
                 };
 
                 let tmb = TmbCalculator::calculate(&data);
-                let result = TmbCalculator::evaluation_result(tmb);
+                let category = TmbCalculator::classify(tmb, weight, &gender);
+                let result = TmbCalculator::evaluation_result(tmb, weight, &category);
 
                 println!("{}", result);
             }
