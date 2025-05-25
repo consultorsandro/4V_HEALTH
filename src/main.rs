@@ -1,5 +1,6 @@
 mod bmi;
 mod metabolism;
+mod body_fat;
 
 use std::io;
 use bmi::calculator::{BmiCalculator, BmiData};
@@ -10,6 +11,7 @@ fn main() {
         println!("\nRequest the health check you want to do:");
         println!("1 – BMI");
         println!("2 – TMB");
+        println!("3 – Body Fat Percentage (PGC)");
         println!("0 – Exit");
 
         let choice = read_input_as_u32();
@@ -63,12 +65,55 @@ fn main() {
 
                 println!("{}", result);
             }
+            3 => {
+                println!("Please enter your weight in kilograms (e.g., 70.5): ");
+                let weight = read_input_as_f32();
+
+                println!("Please enter your height in meters (e.g., 1.75): ");
+                let height = read_input_as_f32();
+
+                println!("Please enter your age in years (e.g., 30): ");
+                let age = read_input_as_u32();
+
+                println!("Please enter your gender (M/F): ");
+                let gender_input = read_input_as_string();
+                let gender = match gender_input.to_lowercase().as_str() {
+                    "m" => Gender::Male,
+                    "f" => Gender::Female,
+                    _ => {
+                        println!("Invalid gender input. Please use 'M' or 'F'.");
+                        continue;
+                    }
+                };
+
+                let data = body_fat::BodyFatData {
+                    weight,
+                    height,
+                    age,
+                    gender: gender.clone(),
+                };
+
+                let bmi = body_fat::BodyFatCalculator::calculate_bmi(&data);
+                let pgc = body_fat::BodyFatCalculator::calculate_pgc(bmi, age, &gender);
+                let sex_category = body_fat::BodyFatCalculator::classify_by_sex(pgc, &gender);
+                let age_category = body_fat::BodyFatCalculator::classify_by_age(pgc, age, &gender);
+
+                let result = body_fat::BodyFatCalculator::evaluation_result(
+                    pgc,
+                    &gender,
+                    age,
+                    &sex_category,
+                    &age_category,
+                );
+
+                println!("{}", result);
+            }
             0 => {
                 println!("Exiting application.");
                 break;
             }
             _ => {
-                println!("Invalid option. Please enter 1, 2, or 0.");
+                println!("Invalid option. Please enter 1, 2, 3, or 0.");
             }
         }
     }
