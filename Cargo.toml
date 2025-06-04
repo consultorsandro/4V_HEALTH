@@ -1,0 +1,9 @@
+[package]
+name = "QuatroV_saude"
+version = "0.1.0"
+edition = "2021"
+authors = ["Seu Nome <seu.email@exemplo.com>"]
+description = "Aplicativo de saúde para cálculo de IMC, TMB e Percentual de Gordura Corporal"
+license = "MIT"
+
+[dependencies]

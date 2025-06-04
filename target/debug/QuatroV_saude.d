@@ -1,0 +1,1 @@
+C:\APLICATIVOS\4V_SAUDE\ github\target\debug\QuatroV_saude.exe: C:\APLICATIVOS\4V_SAUDE\ github\src\bmi\calculator.rs C:\APLICATIVOS\4V_SAUDE\ github\src\bmi\mod.rs C:\APLICATIVOS\4V_SAUDE\ github\src\body_fat.rs C:\APLICATIVOS\4V_SAUDE\ github\src\main.rs C:\APLICATIVOS\4V_SAUDE\ github\src\metabolism\mod.rs C:\APLICATIVOS\4V_SAUDE\ github\src\metabolism\tmb.rs
