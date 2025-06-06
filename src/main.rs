@@ -1,10 +1,12 @@
 mod bmi;
 mod metabolism;
 mod body_fat;
+mod whr;
 
 use std::io;
 use bmi::calculator::{BmiCalculator, BmiData};
 use metabolism::tmb::{TmbCalculator, TmbData, Gender, TmbCategory};
+use whr::calculator::{WhrCalculator, WhrCalculatorTrait, WhrData, Gender as WhrGender};
 
 fn main() {
     loop {
@@ -12,6 +14,7 @@ fn main() {
         println!("1 – BMI");
         println!("2 – TMB");
         println!("3 – Body Fat Percentage (PGC)");
+        println!("4 – Waist-to-Hip Ratio (WHR)");
         println!("0 – Exit");
 
         let choice = read_input_as_u32();
@@ -108,12 +111,41 @@ fn main() {
 
                 println!("{}", result);
             }
+            4 => {
+                println!("Please enter your gender (M/F): ");
+                let gender_input = read_input_as_string();
+                let gender = match gender_input.to_lowercase().as_str() {
+                    "m" => WhrGender::Male,
+                    "f" => WhrGender::Female,
+                    _ => {
+                        println!("Invalid gender input. Please use 'M' or 'F'.");
+                        continue;
+                    }
+                };
+
+                println!("Please enter your waist circumference in centimeters (e.g., 85.0): ");
+                let waist = read_input_as_f32();
+
+                println!("Please enter your hip circumference in centimeters (e.g., 95.0): ");
+                let hip = read_input_as_f32();
+
+                let data = WhrData {
+                    waist_circumference: waist,
+                    hip_circumference: hip,
+                    gender: gender.clone(),
+                };
+
+                let whr = WhrCalculator::calculate(&data);
+                let result = WhrCalculator::evaluate(whr, &gender);
+
+                println!("{}", result);
+            }
             0 => {
                 println!("Exiting application.");
                 break;
             }
             _ => {
-                println!("Invalid option. Please enter 1, 2, 3, or 0.");
+                println!("Invalid option. Please enter 1, 2, 3, 4, or 0.");
             }
         }
     }
@@ -151,5 +183,4 @@ fn read_input_as_string() -> String {
     io::stdin().read_line(&mut input).expect("Failed to read input");
     input.trim().to_string()
 }
-
 
