@@ -1,4 +1,4 @@
-# 🩺 4V_SAUDE
+# 🩺 4V_HEALTH
 
 **4V_SAUDE** is a Rust-based command-line application designed to provide four essential health checks for individuals, following best practices in software architecture (SOLID principles).
 
@@ -21,8 +21,35 @@
 ---
 
 ## 📦 Project Structure
-4V_SAUDE/ ├── src/ │ ├── main.rs │ ├── bmi.rs │ ├── metabolism.rs │ ├── body_fat.rs │ └── whr/ │ ├── mod.rs │ └── calculator.rs ├── Cargo.toml └── README.md
----
+C:.
+│   Cargo.lock
+│   Cargo.toml
+│   README.md
+│
+├───src
+│   │   body_fat.rs
+│   │   main.rs
+│   │
+│   ├───bmi
+│   │       calculator.rs
+│   │       mod.rs
+│   │
+│   ├───metabolism
+│   │       mod.rs
+│   │       tmb.rs
+│   │
+│   └───whr
+│           calculator.rs
+│           mod.rs
+│
+└───target
+    │   .rustc_info.json
+    │   .rustdoc_fingerprint.json
+    │   CACHEDIR.TAG
+    │
+    ├───debug
+    |───doc
+
 
 ## 🧑‍💻 Usage
 
