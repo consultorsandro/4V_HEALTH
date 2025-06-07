@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BmiCategory"],"struct":["BmiCalculator","BmiData"]};

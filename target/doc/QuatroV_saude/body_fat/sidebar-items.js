@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BodyFatAgeCategory","BodyFatSexCategory"],"struct":["BodyFatCalculator","BodyFatData"]};

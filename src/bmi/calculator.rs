@@ -52,7 +52,7 @@ impl BmiCalculator {
             BmiCategory::ObesityGrade2 => "Obesity Grade 2",
             BmiCategory::ObesityGrade3 => "Obesity Grade 3 (morbid)",
         };
-
+        // Return a formatted string with the BMI classification
         format!("Your BMI assessment is:: {}", classification)
     }
 }

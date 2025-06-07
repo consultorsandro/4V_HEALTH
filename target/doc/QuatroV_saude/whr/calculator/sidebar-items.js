@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Gender"],"struct":["WhrCalculator","WhrData"],"trait":["WhrCalculatorTrait"]};

@@ -82,7 +82,7 @@ impl BodyFatCalculator {
                 30..=39 => (8.0, 20.0, 25.0, 26.0),
                 40..=49 => (10.0, 22.0, 27.0, 28.0),
                 50..=59 => (11.0, 23.0, 28.0, 29.0),
-                _ => (13.0, 25.0, 30.0, 31.0), // 60+
+                _ => (13.0, 25.0, 30.0, 31.0), // 60+ 
             },
             Gender::Female => match age {
                 20..=29 => (16.0, 27.0, 32.0, 33.0),
@@ -92,7 +92,7 @@ impl BodyFatCalculator {
                 _ => (20.0, 31.0, 36.0, 37.0), // 60+
             },
         };
-
+        // Classify based on the calculated PGC and the defined ranges
         if pgc < low {
             BodyFatAgeCategory::Low
         } else if pgc <= normal {

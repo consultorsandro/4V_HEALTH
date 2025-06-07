@@ -7,7 +7,7 @@ pub enum Gender {
     Male,
     Female,
 }
-
+// Represents the data required for TMB calculation
 pub struct TmbData {
     pub weight: f32, // em kg
     pub height: f32, // em metros
@@ -15,7 +15,7 @@ pub struct TmbData {
     pub gender: Gender,
 }
 
-pub struct TmbCalculator;
+pub struct TmbCalculator; // This struct serves as a namespace for TMB calculation methods
 
 #[derive(Debug)]
 pub enum TmbCategory {
@@ -25,7 +25,7 @@ pub enum TmbCategory {
     High,
     VeryHigh,
 }
-
+// Represents the categories of TMB based on the calculated value per kg of body weight
 impl TmbCalculator {
     pub fn calculate(data: &TmbData) -> f32 {
         match data.gender {
@@ -37,7 +37,7 @@ impl TmbCalculator {
             }
         }
     }
-
+    /// Classifies the TMB based on the calculated value per kg of body weight
     pub fn classify(tmb: f32, weight: f32, gender: &Gender) -> TmbCategory {
         let tmb_per_kg = tmb / weight;
 
@@ -58,7 +58,7 @@ impl TmbCalculator {
             },
         }
     }
-
+    /// Generates a formatted string with the TMB result and classification
     pub fn evaluation_result(tmb: f32, weight: f32, category: &TmbCategory) -> String {
         let tmb_per_kg = tmb / weight;
         let classification = match category {
@@ -68,7 +68,7 @@ impl TmbCalculator {
             TmbCategory::High => "High",
             TmbCategory::VeryHigh => "Very high",
         };
-
+        // Return a formatted string with the TMB result and classification
         format!(
             "Your Basal Metabolic Rate (TMB) is {:.2} kcal/day.\n\
              Your TMB per kg is {:.2} kcal/kg/day.\n\

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["main","read_input_as_f32","read_input_as_string","read_input_as_u32"],"mod":["bmi","body_fat","metabolism","whr"]};
