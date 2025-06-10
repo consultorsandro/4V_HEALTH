@@ -25,7 +25,7 @@ pub enum TmbCategory {
     High,
     VeryHigh,
 }
-// Represents the categories of TMB based on the calculated value per kg of body weight
+// Represents the categories of TMB based on the calculated value per kg of body weight (WHO guidelines)
 impl TmbCalculator {
     pub fn calculate(data: &TmbData) -> f32 {
         match data.gender {

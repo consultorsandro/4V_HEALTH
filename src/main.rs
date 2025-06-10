@@ -3,13 +3,13 @@ mod metabolism;
 mod body_fat;
 mod whr;
 
-use std::io;
-use bmi::calculator::{BmiCalculator, BmiData};
-use metabolism::tmb::{TmbCalculator, TmbData, Gender, TmbCategory};
+use std::io; // Importing the standard input/output library
+use bmi::calculator::{BmiCalculator, BmiData}; // Importing enum BMI calculator and data structures
+use metabolism::tmb::{TmbCalculator, TmbData, Gender, TmbCategory}; 
 use whr::calculator::{WhrCalculator, WhrCalculatorTrait, WhrData, Gender as WhrGender};
 
 fn main() {
-    loop {
+    loop { // Start of the main loop until the user decides to exit
         println!("\nRequest the health check you want to do:");
         println!("1 – BMI");
         println!("2 – TMB");
@@ -17,12 +17,12 @@ fn main() {
         println!("4 – Waist-to-Hip Ratio (WHR)");
         println!("0 – Exit");
 
-        let choice = read_input_as_u32();
+        let choice = read_input_as_u32(); // Read user input as u32
 
-        match choice {
-            1 => {
+        match choice { // Match user input against available options
+            1 => { // BMI Calculation
                 println!("Please enter your weight in kilograms (e.g., 70.5): ");
-                let weight = read_input_as_f32();
+                let weight = read_input_as_f32(); // Read user input as f32
 
                 println!("Please enter your height in meters (e.g., 1.75): ");
                 let height = read_input_as_f32();
@@ -34,7 +34,7 @@ fn main() {
 
                 println!("{}", result);
             }
-            2 => {
+            2 => { // TMB Calculation
                 println!("Please enter your weight in kilograms (e.g., 70.5): ");
                 let weight = read_input_as_f32();
 
@@ -59,7 +59,7 @@ fn main() {
                     weight,
                     height,
                     age,
-                    gender: gender.clone(),
+                    gender: gender.clone(), // gender is cloned to avoid ownership issues
                 };
 
                 let tmb = TmbCalculator::calculate(&data);
@@ -68,7 +68,7 @@ fn main() {
 
                 println!("{}", result);
             }
-            3 => {
+            3 => { // Body Fat Percentage (PGC) Calculation
                 println!("Please enter your weight in kilograms (e.g., 70.5): ");
                 let weight = read_input_as_f32();
 
@@ -111,7 +111,7 @@ fn main() {
 
                 println!("{}", result);
             }
-            4 => {
+            4 => { // Waist-to-Hip Ratio (WHR) Calculation
                 println!("Please enter your gender (M/F): ");
                 let gender_input = read_input_as_string();
                 let gender = match gender_input.to_lowercase().as_str() {
@@ -124,10 +124,10 @@ fn main() {
                 };
 
                 println!("Please enter your waist circumference in centimeters (e.g., 85.0): ");
-                let waist = read_input_as_f32();
+                let waist = read_input_as_f32(); // cintura
 
                 println!("Please enter your hip circumference in centimeters (e.g., 95.0): ");
-                let hip = read_input_as_f32();
+                let hip = read_input_as_f32(); // quadril
 
                 let data = WhrData {
                     waist_circumference: waist,
