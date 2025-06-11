@@ -56,3 +56,59 @@ impl BmiCalculator {
         format!("Your BMI assessment is:: {}", classification)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_calculate_bmi() {
+        let data = BmiData { weight: 70.0, height: 1.75 };
+        let bmi = BmiCalculator::calculate(&data);
+        assert!((bmi - 22.86).abs() < 0.01); // Verifica se o IMC está próximo de 22.86
+    }
+
+    #[test]
+    fn test_classify_bmi_underweight() {
+        let category = BmiCalculator::classify(18.0);
+        assert_eq!(category, BmiCategory::Underweight);
+    }
+
+    #[test]
+    fn test_classify_bmi_normal_weight() {
+        let category = BmiCalculator::classify(22.0);
+        assert_eq!(category, BmiCategory::NormalWeight);
+    }
+
+    #[test]
+    fn test_classify_bmi_overweight() {
+        let category = BmiCalculator::classify(27.0);
+        assert_eq!(category, BmiCategory::Overweight);
+    }
+
+    #[test]
+    fn test_classify_bmi_obesity_grade1() {
+        let category = BmiCalculator::classify(32.0);
+        assert_eq!(category, BmiCategory::ObesityGrade1);
+    }
+
+    #[test]
+    fn test_classify_bmi_obesity_grade2() {
+        let category = BmiCalculator::classify(37.0);
+        assert_eq!(category, BmiCategory::ObesityGrade2);
+    }
+
+    #[test]
+    fn test_classify_bmi_obesity_grade3() {
+        let category = BmiCalculator::classify(42.0);
+        assert_eq!(category, BmiCategory::ObesityGrade3);
+    }
+
+    #[test]
+    fn test_evaluation_result() {
+        let bmi = 22.86;
+        let category = BmiCategory::NormalWeight;
+        let result = BmiCalculator::evaluation_result(bmi, &category);
+        assert_eq!(result, "Your BMI assessment is:: Normal weight");
+    }
+}
