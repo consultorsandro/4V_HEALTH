@@ -44,16 +44,16 @@ impl TmbCalculator {
         match gender {
             Gender::Male => match tmb_per_kg {
                 x if x < 15.0 => TmbCategory::VeryLow,
-                x if x < 20.0 => TmbCategory::Low,
-                x if x < 25.0 => TmbCategory::Normal,
-                x if x < 30.0 => TmbCategory::High,
+                x if x > 15.0 && x < 20.0 => TmbCategory::Low,
+                x if x > 20.0 && x < 25.0 => TmbCategory::Normal,
+                x if x > 25.0 && x < 30.0 => TmbCategory::High,
                 _ => TmbCategory::VeryHigh,
             },
             Gender::Female => match tmb_per_kg {
                 x if x < 13.0 => TmbCategory::VeryLow,
-                x if x < 18.0 => TmbCategory::Low,
-                x if x < 23.0 => TmbCategory::Normal,
-                x if x < 28.0 => TmbCategory::High,
+                x if x > 13.0 && x < 18.0 => TmbCategory::Low,
+                x if x > 18.0 && x < 23.0 => TmbCategory::Normal,
+                x if x > 23.0 && x < 28.0 => TmbCategory::High,
                 _ => TmbCategory::VeryHigh,
             },
         }
@@ -77,7 +77,6 @@ impl TmbCalculator {
         )
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -91,7 +90,9 @@ mod tests {
             gender: Gender::Male,
         };
         let tmb = TmbCalculator::calculate(&data);
-        assert!((tmb - 1745.1).abs() < 0.1); // Valor esperado para um homem de 70kg, 1.75m e 25 anos
+        // Cálculo manual: 88.36 + (13.4 * 70) + (4.8 * 175) - (5.7 * 25)
+        // = 88.36 + 938 + 840 - 142.5 = 1723.86
+        assert!((tmb - 1723.86).abs() < 0.1);
     }
 
     #[test]
@@ -103,33 +104,39 @@ mod tests {
             gender: Gender::Female,
         };
         let tmb = TmbCalculator::calculate(&data);
-        assert!((tmb - 1395.0).abs() < 0.1); // Valor esperado para uma mulher de 60kg, 1.65m e 30 anos
+        // Cálculo manual: 447.6 + (9.2 * 60) + (3.1 * 165) - (4.3 * 30)
+        // = 447.6 + 552 + 511.5 - 129 = 1382.1
+        assert!((tmb - 1382.1).abs() < 0.1);
     }
 
     #[test]
     fn test_classify_male() {
-        let tmb = 1745.1; // TMB calculado para o teste
+        // Usando o valor calculado acima
+        let tmb = 1723.86;
         let weight = 70.0;
         let category = TmbCalculator::classify(tmb, weight, &Gender::Male);
+        // tmb_per_kg = 1723.86 / 70 = 24.626... => faixa Normal (20 < x < 25)
         assert_eq!(category, TmbCategory::Normal);
     }
 
     #[test]
     fn test_classify_female() {
-        let tmb = 1395.0; // TMB calculado para o teste
+        // Usando o valor calculado acima
+        let tmb = 1382.1;
         let weight = 60.0;
         let category = TmbCalculator::classify(tmb, weight, &Gender::Female);
-        assert_eq!(category, TmbCategory::Normal);
+        // tmb_per_kg = 1382.1 / 60 = 23.035 => faixa High (23 < x < 28)
+        assert_eq!(category, TmbCategory::High);
     }
 
     #[test]
     fn test_evaluation_result() {
-        let tmb = 1745.1;
+        let tmb = 1723.86;
         let weight = 70.0;
         let category = TmbCategory::Normal;
         let result = TmbCalculator::evaluation_result(tmb, weight, &category);
-        let expected = "Your Basal Metabolic Rate (TMB) is 1745.10 kcal/day.\n\
-                        Your TMB per kg is 24.93 kcal/kg/day.\n\
+        let expected = "Your Basal Metabolic Rate (TMB) is 1723.86 kcal/day.\n\
+                        Your TMB per kg is 24.63 kcal/kg/day.\n\
                         Classification: Normal";
         assert_eq!(result, expected);
     }
