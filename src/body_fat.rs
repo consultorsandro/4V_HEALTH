@@ -135,4 +135,109 @@ impl BodyFatCalculator {
             sex_str, sex_class, sex_str, age, age_class
         )
     }
+
+    /// Evaluates the body fat classification based on the BMI and returns a result message.
+    pub fn evaluate(bmi: f32, gender: &Gender) -> String {
+        let (low, normal, high, _very_high) = match gender {
+            Gender::Male => (18.5, 25.0, 30.0, 35.0),
+            Gender::Female => (18.5, 25.0, 30.0, 35.0),
+        };
+
+        if bmi < low {
+            format!("BMI: {:.2}\nCondition: Underweight", bmi)
+        } else if bmi < normal {
+            format!("BMI: {:.2}\nCondition: Normal weight", bmi)
+        } else if bmi < high {
+            format!("BMI: {:.2}\nCondition: Overweight", bmi)
+        } else {
+            format!("BMI: {:.2}\nCondition: Obese", bmi)
+        }
+    }
 } 
+
+// ... existing code ...
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_calculate_male() {
+        let data = BodyFatData {
+            weight: 70.0,
+            height: 1.75,
+            age: 30,
+            gender: Gender::Male,
+        };
+        let bmi = BodyFatCalculator::calculate_bmi(&data);
+        assert!((bmi - 22.86).abs() < 1e-2);
+    }
+
+    #[test]
+    fn test_calculate_female() {
+        let data = BodyFatData {
+            weight: 60.0,
+            height: 1.65,
+            age: 30,
+            gender: Gender::Female,
+        };
+        let bmi = BodyFatCalculator::calculate_bmi(&data);
+        assert!((bmi - 22.04).abs() < 1e-2);
+    }
+
+    #[test]
+    fn test_evaluate_male_underweight() {
+        let bmi = 17.0;
+        let result = BodyFatCalculator::evaluate(bmi, &Gender::Male);
+        assert!(result.contains("Underweight"));
+    }
+
+    #[test]
+    fn test_evaluate_male_normal() {
+        let bmi = 22.0;
+        let result = BodyFatCalculator::evaluate(bmi, &Gender::Male);
+        assert!(result.contains("Normal weight"));
+    }
+
+    #[test]
+    fn test_evaluate_male_overweight() {
+        let bmi = 27.0;
+        let result = BodyFatCalculator::evaluate(bmi, &Gender::Male);
+        assert!(result.contains("Overweight"));
+    }
+
+    #[test]
+    fn test_evaluate_male_obese() {
+        let bmi = 32.0;
+        let result = BodyFatCalculator::evaluate(bmi, &Gender::Male);
+        assert!(result.contains("Obese"));
+    }
+
+    #[test]
+    fn test_evaluate_female_underweight() {
+        let bmi = 17.0;
+        let result = BodyFatCalculator::evaluate(bmi, &Gender::Female);
+        assert!(result.contains("Underweight"));
+    }
+
+    #[test]
+    fn test_evaluate_female_normal() {
+        let bmi = 22.0;
+        let result = BodyFatCalculator::evaluate(bmi, &Gender::Female);
+        assert!(result.contains("Normal weight"));
+    }
+
+    #[test]
+    fn test_evaluate_female_overweight() {
+        let bmi = 27.0;
+        let result = BodyFatCalculator::evaluate(bmi, &Gender::Female);
+        assert!(result.contains("Overweight"));
+    }
+
+    #[test]
+    fn test_evaluate_female_obese() {
+        let bmi = 32.0;
+        let result = BodyFatCalculator::evaluate(bmi, &Gender::Female);
+        assert!(result.contains("Obese"));
+    }
+}

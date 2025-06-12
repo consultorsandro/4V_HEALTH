@@ -59,3 +59,62 @@ impl WhrCalculatorTrait for WhrCalculator {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_calculate_male() {
+        let data = WhrData {
+            waist_circumference: 90.0,
+            hip_circumference: 100.0,
+            gender: Gender::Male,
+        };
+        let whr = WhrCalculator::calculate(&data);
+        assert!((whr - 0.9).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_calculate_female() {
+        let data = WhrData {
+            waist_circumference: 85.0,
+            hip_circumference: 100.0,
+            gender: Gender::Female,
+        };
+        let whr = WhrCalculator::calculate(&data);
+        assert!((whr - 0.85).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_evaluate_male_high_risk() {
+        let whr = 0.95;
+        let result = WhrCalculator::evaluate(whr, &Gender::Male);
+        assert!(result.contains("Higher risk"));
+        assert!(result.contains("WHR: 0.95"));
+    }
+
+    #[test]
+    fn test_evaluate_male_low_risk() {
+        let whr = 0.89;
+        let result = WhrCalculator::evaluate(whr, &Gender::Male);
+        assert!(result.contains("Lower risk"));
+        assert!(result.contains("WHR: 0.89"));
+    }
+
+    #[test]
+    fn test_evaluate_female_high_risk() {
+        let whr = 0.90;
+        let result = WhrCalculator::evaluate(whr, &Gender::Female);
+        assert!(result.contains("Higher risk"));
+        assert!(result.contains("WHR: 0.90"));
+    }
+
+    #[test]
+    fn test_evaluate_female_low_risk() {
+        let whr = 0.80;
+        let result = WhrCalculator::evaluate(whr, &Gender::Female);
+        assert!(result.contains("Lower risk"));
+        assert!(result.contains("WHR: 0.80"));
+    }
+}
