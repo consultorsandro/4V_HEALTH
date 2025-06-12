@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "FourV_saude"
+name = "fourv_saude"
 version = "0.1.0"
